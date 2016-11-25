@@ -1,4 +1,6 @@
-# USAGE:
+# This program computes the generalized effective connectivity of a Boolean function.
+
+# USAGE EXAMPLE:
 
 # Note: Make sure you also have 'ComputeDetectCubes.R' in the same folder as this file.
 
@@ -21,6 +23,16 @@
 # 
 # $GeneralizedKeff
 # [1] 0.8112781
+
+# Optional program parameters: 
+# 'ReturnSymmSchs = T' will return the essential symmetric schemata including ordinary schemata.
+# 'ComputeKeff = T' will return the Keff value as well.
+
+# Description of output:
+# If 'ReturnSymmSchs = T' then the essential symmetric schemata and the corresponding output values are returned.
+# The schema symbols are encoded according to the following mapping: '0' -> 0, '1' -> 1, '#' -> 2, '0'' -> 3, '1'' -> 4, '#'' -> 5
+# Non-permuting '#' are also represented with 5 when they are the only kind of '#' in the schema.
+# So, (02345) mean (0#0'1'#'); (015) means (01#).
 
 #-------------------------------------------------------------------------------------------------------------------------------------
 
@@ -72,15 +84,7 @@
 # covering symmetric schema's dimension is smaller. 
 # Step 5: Compute $k_r^*$ by averaging over the covering dimensions of all $2^k$ input vectors. Compute $k_e^* = k - k_r^*$.
 
-# Optional program parameters: 
-# 'ReturnSymmSchs = T' will return the essential symmetric schemata including ordinary schemata.
-# 'ComputeKeff = T' will return the Keff value as well.
-
-# Program output:
-# If 'ReturnSymmSchs = T' then the essential symmetric schemata and the corresponding output values are returned.
-# The schema symbols are encoded according to the following mapping: '0' -> 0, '1' -> 1, '#' -> 2, '0'' -> 3, '1'' -> 4, '#'' -> 5
-# Non-permuting '#' are also represented with 5 when they are the only kind of '#' in the schema.
-# So, (02345) mean (0#0'1'#'); (015) means (01#).
+# More details can be found in Appendix A of the documentation.
 
 #-------------------------------------------------------------------------------------------------------------------------------------
 
@@ -796,6 +800,8 @@ ComputeGeneralizedKeff <- function(Func, K, ComputeKeff = F, ReturnSymmSchs = F,
 	# LUT = t(sapply(0: ((2^K) - 1), function(i) rev(dec2bin(i, K))))  # using 'dec2bin' defined in package 'BoolNet'
 	LUT = t(sapply(0: ((2^K) - 1), function(i) dec2bin(i, K)))
 	
+	if (K == 1) LUT = matrix(LUT, ncol = K)
+	
 	NodeKred = rep(0, 2^K)
 	
 	NodeKredGeneral = rep(0, 2^K)
@@ -919,9 +925,11 @@ ComputeGeneralizedKeff <- function(Func, K, ComputeKeff = F, ReturnSymmSchs = F,
 		  
 		  EssentialSchemata = rbind(EssentialSchemata, LUT[which(NodeKredGeneral == 0), ])  # include uncovered LUT entries (Dim = 0)
 		  
+		  if (K == 1) EssentialSchemata = matrix(EssentialSchemata, ncol = K)
+		  
 		  SchemaOutputs = unlist(EssSchOutputs)
 		  
-		  SchemaOutputs = c(SchemaOutputs, func[which(NodeKredGeneral == 0)])  # include outputs with uncovered LUT entries (Dim = 0)
+		  SchemaOutputs = c(SchemaOutputs, Func[which(NodeKredGeneral == 0)])  # include outputs with uncovered LUT entries (Dim = 0)
 		  
 		  return(list(EssentialSchemata = EssentialSchemata, SchemaOutputs = SchemaOutputs, Keff = Keff, GeneralizedKeff = GeneralizedKeff))
 		  
@@ -937,9 +945,11 @@ ComputeGeneralizedKeff <- function(Func, K, ComputeKeff = F, ReturnSymmSchs = F,
 		  
 		  EssentialSchemata = rbind(EssentialSchemata, LUT[which(NodeKredGeneral == 0), ])  # include uncovered LUT entries (Dim = 0)
 		  
+		  if (K == 1) EssentialSchemata = matrix(EssentialSchemata, ncol = K)
+		  
 		  SchemaOutputs = unlist(EssSchOutputs)
 		  
-		  SchemaOutputs = c(SchemaOutputs, func[which(NodeKredGeneral == 0)])  # include outputs with uncovered LUT entries (Dim = 0)
+		  SchemaOutputs = c(SchemaOutputs, Func[which(NodeKredGeneral == 0)])  # include outputs with uncovered LUT entries (Dim = 0)
 		  
 		  return(list(EssentialSchemata = EssentialSchemata, SchemaOutputs = SchemaOutputs, GeneralizedKeff = GeneralizedKeff))
 		  

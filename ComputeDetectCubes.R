@@ -1,14 +1,58 @@
+# This program compresses a set of LUT entries maximally, and returns a redescription of the same using schemata.
+# The terms "cube" and "subcube" refer to a schema.
+
+# USAGE EXAMPLE:
+
+# Suppose we have the following subset of LUT entries with K = 3 to redescribe:
+# SubLUT
+# [,1] [,2] [,3]
+# [1,]    0    0    0
+# [2,]    0    0    1
+# [3,]    0    1    0
+
+# DetectCubes(SubLUT,K)
+
+# The following output is generated:
+
+# A list with the following items:
+# $Schemata: a list of schemata
+# $CvrdStsIndices: a list of list of indices of LUT entries covered by each schema
+# $CvrDims: a list of schema dimensions
+
+# $Schemata
+# $Schemata[[1]]
+# [1] 0 0 2
+# 
+# $Schemata[[2]]
+# [1] 0 2 0
+# 
+# 
+# $CvrdStsIndices
+# $CvrdStsIndices[[1]]
+# [1] 1 2
+# 
+# $CvrdStsIndices[[2]]
+# [1] 1 3
+# 
+# 
+# $CvrDims
+# [1] 1 1 1
+
+# The schema symbols are encoded according to the following mapping: '0' -> 0, '1' -> 1, '#' -> 2
+
+#---------------------------------------------------------------------------------------------------------------------------------------
+
 # BASIC IDEA:
-# Rather than consider all possible subcubes and verify if each one qualifies as a prime implicant (PI), we
-# first consider sets of LUT entries that could potentially contain one or more subcubes. We identify such 
-# sets based on the number of 1s of each input value of that set. 
+# Rather than consider all possible subcubes at every dimension and verify if each one qualifies as a prime implicant (PI), we
+# first consider sets of LUT entries that could potentially contain one or more subcubes. We identify such sets based on the
+# number of 1s of each input value of that set. 
 # For a set of LUT entries to constitute a D-dimensional subcube, the distribution of the numbers of 1s associated 
 # with all of the 2^D corners of the subcube must match a particular distribution. Let's say that the bottom left (BL) 
 # corner of the subcube contains an LUT entry with number of 1s equal to X. If it is the BL of a subcube (PI), then it must
 # be the case that the top right (TR) corner of the same subcube constains X + D number of 1s. Further, there must be 
-# exactly C(D, X+Ni) number of corners with (X+Ni) number of 1s. Thus, there is a specific (binomial) distribution of the number of 1s 
-# in the LUT entries associated with the corners of a subcube. In other words, it is a necessary condition for a set of LUT
-# entries to constitue a subcube.
+# exactly C(D, X+Ni) number of corners with (X+Ni) number of 1s. Thus, there is a specific (binomial) distribution of the number 
+# of 1s in the LUT entries associated with the corners of a subcube --- a necessary condition for a set of LUT entries to 
+# constitue a subcube, in other words.
 
 # DETAILS OF THE METHOD: 
 # We first identify a set of LUT entries that potentially contains one or more D-dimensional subcubes. The associated necessary condition 
@@ -45,6 +89,8 @@
 # Thus, if the number of mismatches between v1 and v2 is exactly equal to D, then that implies that v1 and
 # v2 are potential BL and TR corners of a subcube. Any other number of mismatches means otherwise.
 # Examples: D = 2; v1 = 11000; minimal mismatch: v2 = 11011; maximal mismatch: v2 = 10111.
+
+#-----------------------------------------------------------------------------------------------------------------------------------
 
 DetectCubes <- function(SubLUT, K) {
   

@@ -178,7 +178,8 @@ DetectCubes <- function(SubLUT, K) {
               cube = c(cube, LUTOtherCornerIdx[NetFxdColMtch])
             else CubeExists = F
             
-          } # else a 1D cube exists (that contains only the BL and TR)
+          } # else a 1D cube exists (that contains only the BL and TR; CubeExists = T by default since a BL can match
+            # with only one TR and vice versa for 1D cubes)
           
           if (CubeExists) {
             

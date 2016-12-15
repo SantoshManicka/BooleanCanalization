@@ -889,12 +889,12 @@ SuperSchema <- function(sch1, sch2) {
 # with the other sets. At every step, during the intersection of SchSet1 and SchSet2, first the superschemata in both sets
 # are identified and isolated; the rest of the schemata, if any, in both sets are then actually intersected. The final set
 # of schemata so obtained is finally compressed by the 'UnionSchemataSet' function. This last compression step is necessary
-# sometimes. For example, {##1} Intersect {11#, #11} -> {111, #11} -> further compression -> {#11}; here compression is 
-# necessary. On the other hand, {##1} Intersect {1##, #11} -> {1#1, #11}; here further compression is not necessary. We 
-# simply send the intersection result to the union method and let it perform any further compression needed. 
-# If at any point SchSet1 and SchSet2 intersect to return a NULL, the procedure is halted and a NULL is returned. The reason
-# is that a NULL result from an intersection means a logical contradiction (FALSE), and intersecting FALSE with other schemata
-# is FALSE as well.
+# sometimes. For example, {##1} Intersect {11#, #11} -> {111, #11} -> further compression -> {#11}; {##1} Intersect {11#, #11} 
+# -> {101, #11} -> further compression -> {1#1, #11}; as can be seen, in both cases further compression is necessary. On the 
+# other hand, {##1} Intersect {1##, #11} -> {1#1, #11}; here further compression is not necessary. We simply send the 
+# intersection result to the union method and let it perform any further compression needed. If at any point SchSet1 and 
+# SchSet2 intersect to return a NULL, the procedure is halted and a NULL is returned. The reason is that a NULL result from 
+# an intersection means a logical contradiction (FALSE), and intersecting FALSE with other schemata is FALSE as well.
 
 # Pruning conditions:
 # We prune the search for superschemata by considering only those schemata in SchSet2, for every schema sch1 in SchSet1, 

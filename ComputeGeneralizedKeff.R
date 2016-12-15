@@ -1,5 +1,7 @@
 # This program computes the generalized effective connectivity of a Boolean function.
 
+# Appendix A of the documentation describes the main concepts in detail with the help of an example.
+
 # USAGE EXAMPLE:
 
 # Note: Make sure you also have 'ComputeDetectCubes.R' in the same folder as this file.
@@ -83,8 +85,6 @@
 # Step 4: Record the dimension of the symmetric schema against every input vector it covers if and only if the current largest 
 # covering symmetric schema's dimension is smaller. 
 # Step 5: Compute $k_r^*$ by averaging over the covering dimensions of all $2^k$ input vectors. Compute $k_e^* = k - k_r^*$.
-
-# More details can be found in Appendix A of the documentation.
 
 #-------------------------------------------------------------------------------------------------------------------------------------
 

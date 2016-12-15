@@ -1,5 +1,7 @@
 # This program integrates a Boolean network for a specified number of time steps.
 
+# Appendix B of the documentation describes the main concepts in detail with the help of an example.
+
 # What is meant by 'integration'?
 # 'Integration' here means the same as integration of a dynamical system. Integration is the method used to solve a 
 # dynamical system specified by ODE, say, that can be solved. The outcome is an analytic expression that computes the

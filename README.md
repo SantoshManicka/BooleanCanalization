@@ -1,2 +1,2 @@
 # BooleanCanalization
-Contains source code written in R for the purpose of computing canalization measures for Boolean functions and networks
+An R-based library for computing canalization measures for Boolean functions and networks
